@@ -1,0 +1,60 @@
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    let cart = [];
+
+    function addToCart(id, name, price) {
+        const product = { id, name, price };
+        cart.push(product);
+        updateCartCount();
+        updateCart();
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCart(); // Atualiza o conteúdo do carrinho
+        updateCartCount(); // Atualiza a contagem no carrinho
+    }
+
+    function updateCart() {
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        cartItems.innerHTML = '';
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            total += item.price;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>R$ ${item.price.toFixed(2)}</td>
+                <td><button class="btn btn-danger" onclick="removeFromCart(${index})">Remover</button></td>
+            `;
+            cartItems.appendChild(row);
+        });
+
+        cartTotal.textContent = total.toFixed(2);
+    }
+
+    function updateCartCount() {
+        const cartCount = document.getElementById('cart-count');
+        cartCount.textContent = cart.length;
+    }
+
+    function clearCart() {
+        cart = [];
+        updateCart();
+        updateCartCount();
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            alert("Seu carrinho está vazio!");
+            return;
+        }
+        alert("Compra finalizada com sucesso!");
+        clearCart();
+    }
+</script>
